@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unexplained: 1000 phenomena science cannot explain</title>
+<meta name="description" content="An interactive visualiser over a dataset of 1000 phenomena that are observed or reported but not currently explained, with honest status tiers separating genuine open problems from deflated mysteries.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Unexplained: 1000 phenomena science cannot explain">
+<meta property="og:description" content="Interactive visualiser over 1000 documented unexplained phenomena, tiered by how unexplained they actually are.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%3F%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <h1>Unexplained</h1>
+      <p class="tagline">
+        A catalogue of <strong>1000 phenomena</strong> that are observed or reported but not currently
+        explained, tiered by <em>how</em> unexplained they actually are, so genuine open problems
+        stay separable from mysteries that have quietly been solved.
+      </p>
+    </div>
+    <div class="masthead-tools">
+      <button class="icon-btn" id="theme-btn" type="button" aria-label="Switch colour theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M18.6 5.4l-1.5 1.5M6.9 17.1l-1.5 1.5"/>
+        </svg><span id="theme-label">Theme</span>
+      </button>
+      <a class="icon-btn" href="https://github.com/Eeman1113/Unexplained" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5a10.5 10.5 0 0 0-3.32 20.46c.52.1.71-.23.71-.5v-1.77c-2.9.63-3.52-1.4-3.52-1.4-.47-1.2-1.15-1.52-1.15-1.52-.94-.64.07-.63.07-.63 1.04.07 1.59 1.07 1.59 1.07.93 1.59 2.43 1.13 3.02.86.1-.67.36-1.13.66-1.39-2.31-.26-4.74-1.16-4.74-5.15 0-1.14.4-2.07 1.07-2.8-.11-.26-.46-1.32.1-2.75 0 0 .86-.28 2.83 1.07a9.8 9.8 0 0 1 5.16 0c1.96-1.35 2.82-1.07 2.82-1.07.57 1.43.21 2.49.11 2.75.67.73 1.07 1.66 1.07 2.8 0 4-2.44 4.88-4.76 5.14.37.32.7.95.7 1.92v2.85c0 .28.19.61.72.5A10.5 10.5 0 0 0 12 1.5Z"/></svg>
+        <span>Source</span>
+      </a>
+    </div>
+  </header>
+
+  <section class="tiles" id="tiles" aria-label="Dataset summary"></section>
+
+  <section class="filters" aria-label="Filters">
+    <div class="filter-grid">
+      <div class="field search">
+        <label for="q">Search</label>
+        <input type="search" id="q" placeholder="dark matter, Voynich, sleep, prion&hellip;" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="f-cat">Field</label>
+        <select id="f-cat"><option value="">All fields</option></select>
+      </div>
+      <div class="field">
+        <label for="f-evid">Evidence</label>
+        <select id="f-evid"><option value="">Any strength</option></select>
+      </div>
+      <div class="field">
+        <label for="f-repro">Reproducible</label>
+        <select id="f-repro"><option value="">Any</option></select>
+      </div>
+      <div class="field">
+        <label for="f-diff">Min difficulty</label>
+        <select id="f-diff"><option value="">Any</option></select>
+      </div>
+    </div>
+    <div class="chips" id="tier-chips" role="group" aria-label="Filter by status tier"></div>
+    <div class="filter-foot">
+      <span><strong id="count">-</strong> of 1000 phenomena shown</span>
+      <button class="text-btn" id="reset" type="button">Reset all filters</button>
+    </div>
+  </section>
+
+  <div class="chart-grid">
+    <section class="card span-all">
+      <div class="card-head">
+        <h2>How unexplained is it, really?</h2>
+        <p class="card-note">Tiers ordered from genuinely intractable down to solved-but-still-circulating. This ordering is the dataset's whole point: the bottom three tiers are kept deliberately, not padding.</p>
+      </div>
+      <svg class="chart" id="chart-tier" role="img" aria-labelledby="chart-tier-t"><title id="chart-tier-t">Phenomena count by status tier</title></svg>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Where the open problems are</h2>
+        <p class="card-note">Top fields by entry count, with each bar split by broad tier.</p>
+      </div>
+      <svg class="chart" id="chart-field" role="img" aria-labelledby="chart-field-t"><title id="chart-field-t">Phenomena count by field, split by tier group</title></svg>
+      <div class="legend" id="legend-field"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Resolution difficulty</h2>
+        <p class="card-note">Subjective 1 to 10 estimate of how hard each one is to resolve.</p>
+      </div>
+      <svg class="chart" id="chart-diff" role="img" aria-labelledby="chart-diff-t"><title id="chart-diff-t">Distribution of resolution difficulty scores</title></svg>
+    </section>
+
+    <section class="card span-all">
+      <div class="card-head">
+        <h2>Evidence quality against reproducibility</h2>
+        <p class="card-note">The top-left block is the hard core: solid evidence, reproducible on demand, still unexplained. Counts are printed in every cell, so colour is never the only encoding.</p>
+      </div>
+      <div class="heat" id="heat" role="table" aria-label="Evidence strength by reproducibility, counts"></div>
+      <div class="scale-legend" id="heat-scale"></div>
+    </section>
+  </div>
+
+  <section class="card span-all">
+    <div class="table-head">
+      <div>
+        <h2>All matching phenomena</h2>
+        <p class="card-note">Tap any row for the full record: why it resists explanation, leading hypotheses, the testable prediction, and key evidence.</p>
+      </div>
+      <div class="sorts" id="sorts" role="group" aria-label="Sort order"></div>
+    </div>
+    <div class="results" id="results" aria-live="polite"></div>
+    <div class="more-wrap" id="more-wrap" hidden>
+      <button class="more-btn" id="more" type="button">Show more</button>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>
+      Data: <a href="https://github.com/Eeman1113/Unexplained/blob/main/unexplained_phenomena.csv">unexplained_phenomena.csv</a>
+      &middot; 1000 rows &times; 18 columns &middot; <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>.
+      Compiled from general scientific knowledge rather than a systematic literature review:
+      a starting map, not a citable source. Verify before relying on any single row.
+    </p>
+  </footer>
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>

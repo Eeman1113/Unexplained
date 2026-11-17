@@ -4,6 +4,9 @@ A structured, honestly-annotated catalogue of **1000 phenomena that humans know 
 
 **File:** [`unexplained_phenomena.csv`](unexplained_phenomena.csv): 1000 rows × 18 columns, RFC-4180 compliant.
 
+**[Explore it in the browser →](https://eeman1113.github.io/Unexplained/)** - filter by tier, field, evidence
+quality and difficulty; every chart and the full record list re-render against the same slice. Works on phones.
+
 ## Why this isn't just another listicle
 
 Most "unsolved mysteries" lists put the quantum measurement problem next to Bigfoot. That makes them useless. Every row here carries a `status_code` recording *what kind* of unexplained it is, plus independent columns for evidence quality and reproducibility, so you can filter down to the genuine hard core.
@@ -71,6 +74,20 @@ Remaining rows cover epigraphy and undeciphered scripts, paleoclimatology, machi
 - Entries where the "mystery" has dissolved under scrutiny are kept and labelled, rather than quietly dropped. The pattern of how anomalies deflate is itself informative.
 - Reaching 1000 entries required widening the aperture past marquee problems like dark matter to include narrower open questions: individual conjectures with computationally verified but unproven patterns, single unidentified signals, species, scripts, sounds and sites. The `status_code` and `difficulty_1_10` columns are what keep those tiers separable, so filter before drawing conclusions about scale.
 - Where a famous claim failed replication (Bem's precognition, Morgellons, cold fusion, Mandela-effect "timeline" readings), the failure is recorded in the row.
+
+## The visualiser
+
+[eeman1113.github.io/Unexplained](https://eeman1113.github.io/Unexplained/) is a dependency-free static page
+that reads the CSV directly. Charts are inline SVG built against a
+[validated](https://github.com/Eeman1113/Unexplained#readme) colour palette:
+
+- Tier and field counts are **single-series bars**, so order is carried by axis position rather than by hue.
+- The field chart collapses the seven tiers into three groups, because three categorical hues clear the
+  all-pairs colourblind-separation gate and seven do not.
+- The evidence/reproducibility cross-tab is a **single-hue sequential** heatmap with the count printed in
+  every cell, so colour is never the only encoding.
+- Light and dark are two separately chosen palettes, not one auto-inverted set. The sequential ramp runs
+  away from the surface in both.
 
 ## Usage
 
