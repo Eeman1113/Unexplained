@@ -1,0 +1,82 @@
+# Unexplained Phenomena Dataset
+
+A structured, honestly-annotated catalogue of **200 phenomena that humans know happen (or are reported to happen) but cannot currently explain** — spanning fundamental physics, cosmology, biology, neuroscience, medicine, earth sciences, archaeology, cryptography, and anomalistics.
+
+**File:** [`unexplained_phenomena.csv`](unexplained_phenomena.csv) — 200 rows × 18 columns, RFC-4180 compliant.
+
+## Why this isn't just another listicle
+
+Most "unsolved mysteries" lists put the quantum measurement problem next to Bigfoot. That makes them useless. Every row here carries a `status_code` recording *what kind* of unexplained it is, plus independent columns for evidence quality and reproducibility — so you can filter down to the genuine hard core.
+
+| `status_code` | n | Meaning |
+|---|---:|---|
+| `OPEN_HARD_PROBLEM` | 25 | May resist explanation in principle — consciousness, quantum measurement, P vs NP |
+| `OPEN_TECHNICAL` | 83 | Genuinely unsolved but solvable in principle — dark matter, high-Tc superconductivity, abiogenesis |
+| `PARTIALLY_EXPLAINED` | 53 | Mechanism partly known, real gaps remain — Tunguska, Dyatlov Pass, Cambrian explosion |
+| `DISPUTED` | 25 | The *anomaly itself* is contested — Havana syndrome, Mpemba effect, cold fusion, phosphine on Venus |
+| `LIKELY_MUNDANE` | 7 | Famous "mystery", boring answer — Rendlesham Forest, Phoenix Lights, cattle mutilations |
+| `PSEUDO_RESOLVED` | 4 | Solved, yet still circulates as unexplained — crop circles, spontaneous human combustion |
+| `ANECDOTAL_UNVERIFIED` | 3 | No verified phenomenon to explain — poltergeists, reincarnation cases |
+
+Paired with:
+
+- **`evidence_strength`** — ROBUST (110) / MODERATE (64) / WEAK (25) / NONE (1)
+- **`reproducible`** — YES (62) / NO (68) / PARTIAL (25) / ONE_OFF (16) / NA (29)
+
+## Schema
+
+| Column | Description |
+|---|---|
+| `id` | Row identifier, 1–200 |
+| `phenomenon` | Name |
+| `category` | Broad field (Fundamental physics, Biology, Archaeology, …) |
+| `domain` | Specific subfield |
+| `first_documented` | Year or era of first record |
+| `locus` | Where/what it occurs in |
+| `observation_summary` | What is actually observed |
+| `why_it_resists_explanation` | The specific epistemic obstacle — not just "it's hard" |
+| `leading_hypotheses` | Candidate explanations, mainstream first, fringe flagged as such |
+| `status_code` | See table above |
+| `evidence_strength` | ROBUST / MODERATE / WEAK / NONE |
+| `reproducible` | YES / NO / PARTIAL / ONE_OFF / NA |
+| `mainstream_view` | Where scientific consensus actually stands |
+| `testable_prediction` | What would resolve it |
+| `key_evidence_or_cases` | Landmark observations, experiments, incidents |
+| `notable_names` | Key researchers, including prominent critics |
+| `difficulty_1_10` | Subjective estimate of resolution difficulty |
+| `implication_if_solved` | Why it would matter |
+
+## Coverage
+
+Fundamental physics & cosmology (37) · biology & origins (31) · earth & atmospheric sciences (25) · archaeology and undeciphered scripts (15) · astronomy & SETI (13) · neuroscience & consciousness (13) · parapsychology & folklore (12) · medicine (11) · mathematics (6) · maritime & aviation disappearances (6) · UAP cases (6) · oceanography (4) · cryptography (4) · materials science & lost technologies (4) · metaphysics (2)
+
+## Editorial stance
+
+- Mainstream consensus is reported as mainstream consensus. Fringe hypotheses are listed where they're historically significant, and explicitly marked as rejected or unsupported where that's the case.
+- Pyramid construction, Puma Punku, and Nazca rows state plainly that no credible researcher invokes non-human builders.
+- Entries where the "mystery" has dissolved under scrutiny are kept and labelled, rather than quietly dropped — the pattern of how anomalies deflate is itself informative.
+- Where a famous claim failed replication (Bem's precognition, Morgellons, cold fusion, Mandela-effect "timeline" readings), the failure is recorded in the row.
+
+## Usage
+
+```python
+import pandas as pd
+
+df = pd.read_csv("unexplained_phenomena.csv")
+
+# The genuine hard core: solid evidence, reproducible, still unexplained
+core = df[
+    (df.evidence_strength == "ROBUST")
+    & (df.reproducible == "YES")
+    & (df.status_code.isin(["OPEN_HARD_PROBLEM", "OPEN_TECHNICAL"]))
+]
+print(core[["phenomenon", "category", "difficulty_1_10"]].sort_values("difficulty_1_10", ascending=False))
+```
+
+## Caveats
+
+Compiled from general scientific knowledge, not from a systematic literature review — treat it as a well-organized starting map, not a citable source. Dates, counts, and attributions should be verified against primary literature before use in published work. Status codes reflect the state of play as of late 2025; several rows (Hubble tension, dark energy evolution, W boson mass, dark oxygen) are actively moving.
+
+## License
+
+[CC0 1.0](LICENSE) — public domain. Use it however you like.
